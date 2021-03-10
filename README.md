@@ -1,7 +1,6 @@
-# hvt-email
+# hvt-public-sns-topic
 
-
-A Serverless Node lambda (ConfirmationFunction) for sending a confirmation email to an ATF when they update their availability.
+A Serverless Node lambda for publishing to SNS topics once data has been written to the ATF table in the DynamoDB.
 
 **Note:** This lambda doesn't expose any API endpoint. As a consequence, it doesn't make
 sense to start it with `sam local start-api` at development time. If you need to, you
@@ -22,6 +21,14 @@ sent to the lambda by editing the file `events/event.json`.
 1. `npm run build:dev`
 1. `npm run invoke`
 
+### Run and watch Locally
+
+As steps above but instead of `build:dev`
+- `npm run watch:dev`
+
+and in a separate terminal, run
+
+- `npm run start:dev`
 
 ## Debug Locally (VS Code only)
 
