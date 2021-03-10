@@ -1,0 +1,83 @@
+{
+  "Records": [
+    {
+      "eventID": "c81e728d9d4c2f636f067f89cc14862c",
+      "eventName": "MODIFY",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "eu-west-2",
+      "dynamodb": {
+        "Keys": {
+          "id": {
+            "S": "7db12eed-0c3f-4d27-8221-5699f4e3ea22"
+          }
+        },
+        "NewImage": {
+          "id": {
+            "S": "7db12eed-0c3f-4d27-8221-5699f4e3ea22"
+          },
+          "name": {
+            "S": "Derby Cars Ltd."
+          },
+          "email": {
+            "S": "hello@email.com"
+          },
+          "availability": {
+            "M": {
+              "isAvailable": {
+                "BOOL": true
+              },
+              "lastUpdated": {
+                "S": "2020-10-09T12:31:46.518Z"
+              },
+              "endDate": {
+                "S": "2020-11-03T14:21:45.000Z"
+              },
+              "startDate": {
+                "S": "2020-10-06T14:21:45.000Z"
+              }
+            }
+          },
+          "token": {
+            "S": "eyJhbGciOiJIUzI1Ni..."
+          }
+        },
+        "OldImage": {
+          "id": {
+            "S": "7db12eed-0c3f-4d27-8221-5699f4e3ea22"
+          },
+          "name": {
+            "S": "Derby Cars Ltd."
+          },
+          "email": {
+            "S": "hello@email.com"
+          },
+          "availability": {
+            "M": {
+              "isAvailable": {
+                "BOOL": false
+              },
+              "lastUpdated": {
+                "S": "2020-10-09T12:31:46.518Z"
+              },
+              "endDate": {
+                "S": "2020-11-03T14:21:45.000Z"
+              },
+              "startDate": {
+                "S": "2020-10-06T14:21:45.000Z"
+              }
+            }
+          },
+          "token": {
+            "S": "eyJhbGciOiJIUzI1Ni..."
+          }
+        },
+        "ApproximateCreationDateTime": 1428537600,
+        "SequenceNumber": "4421584500000000017450439092",
+        "SizeBytes": 59,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:eu-west-2:123456789012:table/AuthorisedTestingFacilities/stream/2015-06-27T00:48:05.899"
+    }
+  ]
+}
