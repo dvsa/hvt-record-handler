@@ -1,8 +1,7 @@
-import AWS from 'aws-sdk';
-import type { DynamoDBRecord } from 'aws-lambda';
 import deepEqual from 'deep-equal';
 import Joi from 'joi';
 
+import { AttributeMap } from 'aws-sdk/clients/dynamodb';
 import { Availability, AvailabilityChangeData } from '../types';
 
 const atfSchema = Joi.object({
@@ -19,13 +18,11 @@ const availabilitySchema = Joi.object({
   isAvailable: Joi.boolean().required(),
 });
 
-export const extractAvailabilityData = (record: DynamoDBRecord): AvailabilityChangeData => {
-  const oldImage = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.OldImage);
-  const newImage = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.NewImage);
-
+export const extractAvailabilityData = (oldImage: AttributeMap, newImage: AttributeMap): AvailabilityChangeData => {
   const newImageValResult = atfSchema.validate(newImage);
   if (newImageValResult.error || newImageValResult.errors) {
-    throw new Error(`Malformed record: ${JSON.stringify(newImage)}`);
+    throw new Error(`Malformed record: ${JSON.stringify(newImage)}`
+      + `Error: ${newImageValResult.error.message ?? newImageValResult.errors.message}`);
   }
 
   const {

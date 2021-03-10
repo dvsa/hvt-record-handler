@@ -1,10 +1,21 @@
 import type { Template } from 'nunjucks';
+import { AttributeMap } from 'aws-sdk/clients/dynamodb';
 
 export interface Availability {
   lastUpdated: string,
   startDate: string,
   endDate: string,
   isAvailable: boolean,
+}
+
+export enum MessageType {
+  Email = 'Email',
+  AvailabilityHistory = 'AvailabilityHistory'
+}
+
+export interface PublishMessageParams {
+  messages: AttributeMap[];
+  messageType: MessageType;
 }
 
 export interface ATF {
