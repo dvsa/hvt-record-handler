@@ -1,4 +1,5 @@
 import type { DynamoDBRecord, StreamRecord } from 'aws-lambda';
+import AWS from 'aws-sdk';
 
 import { extractAvailabilityData, availabilityHasChanged } from '../../src/lib/availability';
 
@@ -12,14 +13,22 @@ jest.unmock('joi');
 jest.unmock('deep-equal');
 
 describe('extractAvailabilityData()', () => {
+  const validEventOldImage = AWS.DynamoDB.Converter.unmarshall(validEvent.OldImage);
+  const validEventNewImage = AWS.DynamoDB.Converter.unmarshall(validEvent.NewImage);
+  const invalidEmailEventOldImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidEmail.OldImage);
+  const invalidEmailEventNewImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidEmail.NewImage);
+  const invalidAvailabilityEventOldImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidAvailability.OldImage);
+  const invalidAvailabilityEventNewImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidAvailability.NewImage);
+
   it('extracts the availability data as expected', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const token = validEvent.NewImage.token.S;
     const testCases = [
       {
         record: {
-          dynamodb: validEvent as StreamRecord,
-        } as DynamoDBRecord,
+          OldImage: validEventOldImage,
+          NewImage: validEventNewImage,
+        } as StreamRecord,
         expected: {
           id: '7db12eed-0c3f-4d27-8221-5699f4e3ea22',
           name: 'Derby Cars Ltd.',
@@ -42,31 +51,33 @@ describe('extractAvailabilityData()', () => {
     ];
 
     testCases.forEach(({ record, expected }) => {
-      expect(extractAvailabilityData(record)).toEqual(expected);
+      expect(extractAvailabilityData(record.OldImage, record.NewImage)).toEqual(expected);
     });
   });
 
   it('detects when the ATF is in an unexpected format', () => {
     const testCase = {
       record: {
-        dynamodb: eventWithInvalidEmail as StreamRecord,
-      } as DynamoDBRecord,
+        OldImage: invalidEmailEventOldImage,
+        NewImage: invalidEmailEventNewImage,
+      } as StreamRecord,
     };
 
     expect(() => {
-      extractAvailabilityData(testCase.record);
+      extractAvailabilityData(testCase.record.OldImage, testCase.record.NewImage);
     }).toThrowError();
   });
 
   it('detects when the availability data is in an unexpected format', () => {
     const testCase = {
       record: {
-        dynamodb: eventWithInvalidAvailability as StreamRecord,
-      } as DynamoDBRecord,
+        OldImage: invalidAvailabilityEventOldImage,
+        NewImage: invalidAvailabilityEventNewImage,
+      } as StreamRecord,
     };
 
     expect(() => {
-      extractAvailabilityData(testCase.record);
+      extractAvailabilityData(testCase.record.OldImage, testCase.record.NewImage);
     }).toThrowError();
   });
 });
