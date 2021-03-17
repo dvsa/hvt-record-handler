@@ -1,5 +1,5 @@
 import { AttributeMap } from 'aws-sdk/clients/dynamodb';
-import { sns as snsService } from '../service/sns.service';
+import * as snsService from '../service/sns.service';
 import { Logger } from '../util/logger';
 import { MessageType, PublishMessageParams } from '../types';
 
@@ -8,6 +8,7 @@ const availabilityHistoryTopic = process.env.AVAILABILITY_HISTORY_SNS_TOPIC_ARN;
 
 export const publishMessages = async (params: PublishMessageParams, logger: Logger): Promise<void> => {
   const { messages, messageType } = params;
+  logger.info(`Dee: ${JSON.stringify(messages)}`);
 
   const promises = messages.map((message) => snsService.publish(getTopicParams(message, messageType))
     .then(() => ({ atfId: message.atfId, result: 'success' }))

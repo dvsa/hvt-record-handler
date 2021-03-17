@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
-import { AttributeMap } from 'aws-sdk/clients/dynamodb';
 import AWS from 'aws-sdk';
+import { AttributeMap } from 'aws-sdk/clients/dynamodb';
 import type { Context, DynamoDBStreamEvent } from 'aws-lambda';
 import { availabilityHasChanged, extractAvailabilityData } from '../lib/availability';
 import handle from '../util/handle-await-error';
