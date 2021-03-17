@@ -12,7 +12,9 @@ jest.mock('../../src/lib/availability', () => ({
   extractAvailabilityData: jest.fn(),
   availabilityHasChanged: jest.fn(),
 }));
-jest.mock('aws-sdk');
+jest.mock('aws-sdk', () => ({
+  SNS: jest.fn(),
+}));
 
 describe('Record handler lambda index tests', () => {
   let eventMock: DynamoDBStreamEvent;
@@ -36,6 +38,18 @@ describe('Record handler lambda index tests', () => {
   });
 
   test('should not publish to the email topic if availability has not changed', async () => {
+    // mock extract availability
+    // mock has avail changed
+    // mock publish methods
+    jest.spyOn(availability, 'extractAvailabilityData').mockImplementation(jest.fn());
+    jest.spyOn(availability, 'availabilityHasChanged').mockReturnValue(true);
+    const publisherSpy = jest.spyOn(publisher, 'publishMessages').mockImplementation(jest.fn());
+
+    await handler(eventMock, contextMock);
+    expect(publisherSpy).toHaveBeenCalledTimes(2);
+  });
+
+  test('should not publish to the availability history topic if availability has not changed', async () => {
     // mock extract availability
     // mock has avail changed
     // mock publish methods
