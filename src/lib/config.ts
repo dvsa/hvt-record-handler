@@ -1,16 +1,16 @@
 interface Config {
   awsRegion: string,
-  queueUrl: string,
+  emailSnsTopicArn: string,
+  availabilityHistorySnsTopicArn: string,
   nodeEnv: string,
-  templateId: string,
 }
 
 export const getConfig = (): Config => {
   [
     'AWS_DEFAULT_REGION',
-    'SQS_QUEUE_URL',
+    'EMAIL_SNS_TOPIC_ARN',
+    'AVAILABILITY_HISTORY_SNS_TOPIC_ARN',
     'NODE_ENV',
-    'NOTIFY_TEMPLATE_ID',
   ].forEach((envVar) => {
     if (!process.env[`${envVar}`]) {
       throw new Error(`Environment variable ${envVar} seems to be missing.`);
@@ -18,8 +18,8 @@ export const getConfig = (): Config => {
   });
   return {
     awsRegion: process.env.AWS_DEFAULT_REGION,
-    queueUrl: process.env.SQS_QUEUE_URL,
+    emailSnsTopicArn: process.env.EMAIL_SNS_TOPIC_ARN,
+    availabilityHistorySnsTopicArn: process.env.AVAILABILITY_HISTORY_SNS_TOPIC_ARN,
     nodeEnv: process.env.NODE_ENV,
-    templateId: process.env.NOTIFY_TEMPLATE_ID,
   };
 };

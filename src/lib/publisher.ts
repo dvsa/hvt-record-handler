@@ -8,11 +8,10 @@ const availabilityHistoryTopic = process.env.AVAILABILITY_HISTORY_SNS_TOPIC_ARN;
 
 export const publishMessages = async (params: PublishMessageParams, logger: Logger): Promise<void> => {
   const { messages, messageType } = params;
-  logger.info(`Dee: ${JSON.stringify(messages)}`);
 
   const promises = messages.map((message) => snsService.publish(getTopicParams(message, messageType))
-    .then(() => ({ atfId: message.atfId, result: 'success' }))
-    .catch(() => ({ atfId: message.atfId, result: 'failure' })));
+    .then(() => ({ atfId: message.id, result: 'success' }))
+    .catch(() => ({ atfId: message.id, result: 'failure' })));
 
   const results = await Promise.all(promises);
 

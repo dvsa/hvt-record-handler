@@ -11,5 +11,4 @@ module.exports = {
       statements: 75
     }
   },
-  automock: true,
 };

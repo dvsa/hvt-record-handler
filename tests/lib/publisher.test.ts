@@ -1,35 +1,31 @@
-import { AttributeMap } from 'aws-sdk/clients/dynamodb';
+/* eslint-disable @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access */
+
+import { AttributeMap, Converter } from 'aws-sdk/clients/dynamodb';
 import { publishMessages } from '../../src/lib/publisher';
 import { MessageType } from '../../src/types';
-import * as logger from '../../src/util/logger';
+import { Logger } from '../../src/util/logger';
 import * as snsService from '../../src/service/sns.service';
 
-const { createLogger } = logger as jest.Mocked<typeof logger>;
-jest.mock('../../src/service/sns.service', () => ({
-  publish: jest.fn(),
-}));
+jest.mock('../../src/lib/config');
 
 describe('Publisher unit tests', () => {
   describe('publishMessages() tests', () => {
-    let publishMock;
-    let loggerSpy;
-    const message: AttributeMap = { atfId: { S: 'atf1' } };
-    const publishMessagesParams = {
-      messages: [message],
-      messageType: MessageType.Email,
-    };
     const loggerInfoSpy = jest.fn();
     const loggerWarnSpy = jest.fn();
+    let publishMock;
+    const atfOneId = 'atf1';
+    let messageOne: AttributeMap = { id: { S: atfOneId } };
+    messageOne = Converter.unmarshall(messageOne);
+    const atfTwoId = 'atf2';
+    let messageTwo: AttributeMap = { id: { S: atfTwoId } };
+    messageTwo = Converter.unmarshall(messageTwo);
 
+    const loggerMock = <Logger> <unknown> {
+      info: loggerInfoSpy,
+      warn: loggerWarnSpy,
+    };
     beforeEach(() => {
-      // publishMock = jest.spyOn(snsService, 'publish').mockImplementation(jest.fn(() => Promise.resolve(expect.anything())));
-      // publishMock = jest.spyOn(snsService, 'publish').mockResolvedValue(expect.anything());
-      // publish.mockImplementation(jest.fn(() => Promise.resolve(expect.anything())));
-      createLogger.mockImplementation(jest.fn().mockReturnValue({
-        info: loggerInfoSpy,
-        warn: loggerWarnSpy,
-      }));
-      loggerSpy = createLogger(expect.anything(), expect.anything());
+      publishMock = jest.spyOn(snsService, 'publish');
     });
 
     afterEach(() => {
@@ -37,16 +33,37 @@ describe('Publisher unit tests', () => {
     });
 
     test('should log all messages published successfully if no failures occur', async () => {
-      await publishMessages(publishMessagesParams, loggerSpy);
+      const publishMessagesParams = {
+        messages: [messageOne, messageTwo],
+        messageType: MessageType.Email,
+      };
+      const firstSuccessResult = { atfId: messageOne.id, result: 'success' };
+      const secondSuccessResult = { atfId: messageTwo.id, result: 'success' };
+      publishMock.mockImplementationOnce(jest.fn(() => Promise.resolve(firstSuccessResult)));
+      publishMock.mockImplementationOnce(jest.fn(() => Promise.resolve(secondSuccessResult)));
+
+      await publishMessages(publishMessagesParams, loggerMock);
       expect(loggerInfoSpy).toHaveBeenCalledTimes(2);
       expect(loggerInfoSpy).nthCalledWith(1, `All ${MessageType.Email.toString()} messages published successfully.`);
+      expect(loggerInfoSpy).nthCalledWith(2, `${MessageType.Email.toString()} messages processed: 2, successful: 2, failed: 0.`);
       expect(loggerWarnSpy).not.toBeCalled();
     });
 
     test('should log any ATF IDs that failed to publish', async () => {
-      await publishMessages(publishMessagesParams, loggerSpy);
-      expect(loggerInfoSpy).toHaveBeenCalledTimes(2);
-      expect(loggerWarnSpy).nthCalledWith(1, 'Could not publish Email messages for the following ATFs: ');
+      const publishMessagesParams = {
+        messages: [messageOne, messageTwo],
+        messageType: MessageType.AvailabilityHistory,
+      };
+      const firstFailureResult = { atfId: messageOne.id, result: 'failure' };
+      const secondFailureResult = { atfId: messageTwo.id, result: 'failure' };
+      publishMock.mockImplementationOnce(jest.fn(() => Promise.reject(firstFailureResult)));
+      publishMock.mockImplementationOnce(jest.fn(() => Promise.reject(secondFailureResult)));
+
+      await publishMessages(publishMessagesParams, loggerMock);
+      expect(loggerInfoSpy).toHaveBeenCalledTimes(1);
+      expect(loggerWarnSpy).toHaveBeenCalledTimes(1);
+      expect(loggerInfoSpy).toBeCalledWith(`${MessageType.AvailabilityHistory.toString()} messages processed: 2, successful: 0, failed: 2.`);
+      expect(loggerWarnSpy).toBeCalledWith(`Could not publish ${MessageType.AvailabilityHistory.toString()} messages for the following ATFs: ${atfOneId}, ${atfTwoId}`);
     });
   });
 });
