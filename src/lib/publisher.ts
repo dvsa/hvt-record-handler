@@ -1,10 +1,11 @@
 import { AttributeMap } from 'aws-sdk/clients/dynamodb';
+import SNS from 'aws-sdk/clients/sns';
 import * as snsService from '../service/sns.service';
 import { Logger } from '../util/logger';
 import { MessageType, PublishMessageParams } from '../types';
+import { getConfig } from './config';
 
-const emailTopic = process.env.EMAIL_SNS_TOPIC_ARN;
-const availabilityHistoryTopic = process.env.AVAILABILITY_HISTORY_SNS_TOPIC_ARN;
+const config = getConfig();
 
 export const publishMessages = async (params: PublishMessageParams, logger: Logger): Promise<void> => {
   const { messages, messageType } = params;
@@ -26,7 +27,7 @@ export const publishMessages = async (params: PublishMessageParams, logger: Logg
   logger.info(`${messageType} messages processed: ${promises.length}, successful: ${successful.length}, failed: ${failed.length}.`);
 };
 
-const getTopicParams = (message: AttributeMap, messageType: MessageType) => {
+const getTopicParams = (message: AttributeMap, messageType: MessageType): SNS.Types.PublishInput => {
   return {
     Subject: `New ${messageType} message sent to SNS`,
     Message: JSON.stringify(message),
@@ -34,13 +35,13 @@ const getTopicParams = (message: AttributeMap, messageType: MessageType) => {
   };
 };
 
-const getTopicArn = (messageType: MessageType) => {
+const getTopicArn = (messageType: MessageType): string => {
   switch (messageType) {
     case MessageType.Email:
-      return emailTopic;
+      return config.emailSnsTopicArn;
     case MessageType.AvailabilityHistory:
-      return availabilityHistoryTopic;
+      return config.availabilityHistorySnsTopicArn;
     default:
-      return emailTopic;
+      return config.emailSnsTopicArn;
   }
 };

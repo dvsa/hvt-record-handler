@@ -1,7 +1,7 @@
 {
-  "name": "hvt-email",
+  "name": "hvt-record-handler",
   "version": "1.0.0",
-  "description": "A lambda that sends a confirmation email to an ATF when they update their availability.",
+  "description": "A lambda for publishing to SNS topics once data has been written to the ATF table in the DynamoDB.",
   "scripts": {
     "lint": "eslint '*/**/*.ts' --quiet --fix",
     "lint:ci": "eslint '*/**/*.ts'",

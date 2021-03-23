@@ -1,63 +1,74 @@
 {
-  "OldImage": {
-    "id": {
-      "S": "7db12eed-0c3f-4d27-8221-5699f4e3ea22"
-    },
-    "name": {
-      "S": "Derby Cars Ltd."
-    },
-    "email": {
-      "S": "hello@email.com"
-    },
-    "availability": {
-      "M": {
-        "isAvailable": {
-          "BOOL": false
-        },
-        "lastUpdated": {
-          "S": "2020-10-09T12:31:46.518Z"
-        },
-        "endDate": {
-          "S": "2020-11-03T14:21:45.000Z"
-        },
-        "startDate": {
-          "S": "2020-10-06T14:21:45.000Z"
-        }
+  "eventID": "c81e728d9d4c2f636f067f89cc14862c",
+  "eventName": "MODIFY",
+  "eventVersion": "1.1",
+  "eventSource": "aws:dynamodb",
+  "awsRegion": "eu-west-2",
+  "dynamodb": {
+    "Keys": {
+      "id": {
+        "S": "7db12eed-0c3f-4d27-8221-5699f4e3ea22"
       }
     },
-    "token": {
-      "S": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGFydERhdGUiOjE2MDI4NzM0NjQsImVuZERhdGUiOjE2MDUyOTI2NjQsImlzQXZhaWxhYmxlIjp0cnVlLCJpYXQiOjE2MDI4NzM0NjQsImV4cCI6MTYwMzQ3ODI2NCwiaXNzIjoiaHR0cHM6Ly9ib29rLWhndi1idXMtdHJhaWxlci1tb3Quc2VydmljZS5nb3YudWsiLCJzdWIiOiJlMWQ4NzgxOC00YTk3LTQ4NmItYmU4NS1mZDFlY2U4MGJjMzAifQ.-RLsz-87tLDMhLopcJq4wyXs0ySLUd9PzGhmzAtUt8k"
-    }
-  },
-  "NewImage": {
-    "id": {
-      "S": "7db12eed-0c3f-4d27-8221-5699f4e3ea22"
-    },
-    "name": {
-      "S": "Derby Cars Ltd."
-    },
-    "email": {
-      "S": "hello@email.com"
-    },
-    "availability": {
-      "M": {
-        "isAvailable": {
-          "BOOL": true
-        },
-        "lastUpdated": {
-          "S": "2020-10-09T12:31:46.518Z"
-        },
-        "endDate": {
-          "S": "2020-11-03T14:21:45.000Z"
-        },
-        "startDate": {
-          "S": "2020-10-06T14:21:45.000Z"
+    "OldImage": {
+      "id": {
+        "S": "7db12eed-0c3f-4d27-8221-5699f4e3ea22"
+      },
+      "name": {
+        "S": "Derby Cars Ltd."
+      },
+      "email": {
+        "S": "hello@email.com"
+      },
+      "availability": {
+        "M": {
+          "isAvailable": {
+            "BOOL": false
+          },
+          "lastUpdated": {
+            "S": "2020-10-09T12:31:46.518Z"
+          },
+          "endDate": {
+            "S": "2020-11-03T14:21:45.000Z"
+          },
+          "startDate": {
+            "S": "2020-10-06T14:21:45.000Z"
+          }
         }
+      },
+      "token": {
+        "S": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGFydERhdGUiOjE2MDI4NzM0NjQsImVuZERhdGUiOjE2MDUyOTI2NjQsImlzQXZhaWxhYmxlIjp0cnVlLCJpYXQiOjE2MDI4NzM0NjQsImV4cCI6MTYwMzQ3ODI2NCwiaXNzIjoiaHR0cHM6Ly9ib29rLWhndi1idXMtdHJhaWxlci1tb3Quc2VydmljZS5nb3YudWsiLCJzdWIiOiJlMWQ4NzgxOC00YTk3LTQ4NmItYmU4NS1mZDFlY2U4MGJjMzAifQ.-RLsz-87tLDMhLopcJq4wyXs0ySLUd9PzGhmzAtUt8k"
       }
     },
-    "token": {
-      "S": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGFydERhdGUiOjE2MDI4NzM0NjQsImVuZERhdGUiOjE2MDUyOTI2NjQsImlzQXZhaWxhYmxlIjp0cnVlLCJpYXQiOjE2MDI4NzM0NjQsImV4cCI6MTYwMzQ3ODI2NCwiaXNzIjoiaHR0cHM6Ly9ib29rLWhndi1idXMtdHJhaWxlci1tb3Quc2VydmljZS5nb3YudWsiLCJzdWIiOiJlMWQ4NzgxOC00YTk3LTQ4NmItYmU4NS1mZDFlY2U4MGJjMzAifQ.-RLsz-87tLDMhLopcJq4wyXs0ySLUd9PzGhmzAtUt8k"
+    "NewImage": {
+      "id": {
+        "S": "7db12eed-0c3f-4d27-8221-5699f4e3ea22"
+      },
+      "name": {
+        "S": "Derby Cars Ltd."
+      },
+      "email": {
+        "S": "hello@email.com"
+      },
+      "availability": {
+        "M": {
+          "isAvailable": {
+            "BOOL": true
+          },
+          "lastUpdated": {
+            "S": "2020-10-09T12:31:46.518Z"
+          },
+          "endDate": {
+            "S": "2020-11-03T14:21:45.000Z"
+          },
+          "startDate": {
+            "S": "2020-10-06T14:21:45.000Z"
+          }
+        }
+      },
+      "token": {
+        "S": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGFydERhdGUiOjE2MDI4NzM0NjQsImVuZERhdGUiOjE2MDUyOTI2NjQsImlzQXZhaWxhYmxlIjp0cnVlLCJpYXQiOjE2MDI4NzM0NjQsImV4cCI6MTYwMzQ3ODI2NCwiaXNzIjoiaHR0cHM6Ly9ib29rLWhndi1idXMtdHJhaWxlci1tb3Quc2VydmljZS5nb3YudWsiLCJzdWIiOiJlMWQ4NzgxOC00YTk3LTQ4NmItYmU4NS1mZDFlY2U4MGJjMzAifQ.-RLsz-87tLDMhLopcJq4wyXs0ySLUd9PzGhmzAtUt8k"
+      }
     }
   }
 }
-

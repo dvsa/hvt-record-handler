@@ -30,6 +30,8 @@ export const handler = async (event: DynamoDBStreamEvent, context: Context): Pro
     let availabilityData: AvailabilityChangeData;
     const oldImage: AttributeMap = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.OldImage);
     const newImage: AttributeMap = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.NewImage);
+
+    availabilityHistoryMessages.push(oldImage);
     try {
       availabilityData = extractAvailabilityData(oldImage, newImage);
     } catch (err2) {
@@ -39,29 +41,30 @@ export const handler = async (event: DynamoDBStreamEvent, context: Context): Pro
     const { oldAvailability, newAvailability } = availabilityData;
 
     if (availabilityHasChanged(oldAvailability, newAvailability)) {
-      availabilityHistoryMessages.push(oldImage);
       emailMessages.push(newImage);
     }
   });
-  const publishEmailParams: PublishMessageParams = {
-    messages: emailMessages,
-    messageType: MessageType.Email,
-  };
-  const publishAvailabilityHistoryParams: PublishMessageParams = {
-    messages: availabilityHistoryMessages,
-    messageType: MessageType.AvailabilityHistory,
-  };
-  const [[publishEmailMessagesError], [publishAvailabilityHistoryMessagesError]] = await Promise.all([
-    handle(publishMessages(publishEmailParams, logger)),
-    handle(publishMessages(publishAvailabilityHistoryParams, logger)),
-  ]);
-  if (publishEmailMessagesError) {
-    logger.error(`Error while publishing email message(s): ${publishEmailMessagesError.message}`);
-    throw publishEmailMessagesError;
+  if (emailMessages.length) {
+    const publishEmailParams: PublishMessageParams = {
+      messages: emailMessages,
+      messageType: MessageType.Email,
+    };
+    const [publishEmailMessagesError] = await handle(publishMessages(publishEmailParams, logger));
+    if (publishEmailMessagesError) {
+      logger.error(`Error while publishing email message(s): ${publishEmailMessagesError.message}`);
+      throw publishEmailMessagesError;
+    }
   }
-  if (publishAvailabilityHistoryMessagesError) {
-    logger.error(`Error while publishing availability history message(s): ${publishAvailabilityHistoryMessagesError.message}`);
-    throw publishAvailabilityHistoryMessagesError;
+  if (availabilityHistoryMessages.length) {
+    const publishAvailabilityHistoryParams: PublishMessageParams = {
+      messages: availabilityHistoryMessages,
+      messageType: MessageType.AvailabilityHistory,
+    };
+    const [publishAvailabilityHistoryMessagesError] = await handle(publishMessages(publishAvailabilityHistoryParams, logger));
+    if (publishAvailabilityHistoryMessagesError) {
+      logger.error(`Error while publishing availability history message(s): ${publishAvailabilityHistoryMessagesError.message}`);
+      throw publishAvailabilityHistoryMessagesError;
+    }
   }
 
   logger.info('Publish to SNS lambda done.');

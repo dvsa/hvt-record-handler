@@ -1,4 +1,4 @@
-import type { DynamoDBRecord, StreamRecord } from 'aws-lambda';
+import type {DynamoDBRecord, DynamoDBStreamEvent, StreamRecord} from 'aws-lambda';
 import AWS from 'aws-sdk';
 
 import { extractAvailabilityData, availabilityHasChanged } from '../../src/lib/availability';
@@ -13,16 +13,18 @@ jest.unmock('joi');
 jest.unmock('deep-equal');
 
 describe('extractAvailabilityData()', () => {
-  const validEventOldImage = AWS.DynamoDB.Converter.unmarshall(validEvent.OldImage);
-  const validEventNewImage = AWS.DynamoDB.Converter.unmarshall(validEvent.NewImage);
+  const eventMock: DynamoDBStreamEvent = <DynamoDBStreamEvent> <unknown> {
+    Records: [validEvent],
+  };
+  const validEventOldImage = AWS.DynamoDB.Converter.unmarshall(eventMock.Records[0].dynamodb.OldImage);
+  const validEventNewImage = AWS.DynamoDB.Converter.unmarshall(eventMock.Records[0].dynamodb.NewImage);
   const invalidEmailEventOldImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidEmail.OldImage);
   const invalidEmailEventNewImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidEmail.NewImage);
   const invalidAvailabilityEventOldImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidAvailability.OldImage);
   const invalidAvailabilityEventNewImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidAvailability.NewImage);
 
   it('extracts the availability data as expected', () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const token = validEvent.NewImage.token.S;
+    const { token } = validEventNewImage;
     const testCases = [
       {
         record: {
