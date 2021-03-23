@@ -9,7 +9,3 @@ export const publish = async (params: SNS.Types.PublishInput): Promise<Request<P
   const snsClient = new SNS({ region: config.awsRegion });
   return snsClient.publish(params);
 };
-
-// export const sns = {
-//   publish,
-// };

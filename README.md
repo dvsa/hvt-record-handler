@@ -1,4 +1,4 @@
-# hvt-public-sns-topic
+# hvt-record-handler
 
 A Serverless Node lambda for publishing to SNS topics once data has been written to the ATF table in the DynamoDB.
 
