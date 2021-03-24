@@ -6,7 +6,12 @@ import { MessageType } from '../../src/types';
 import { Logger } from '../../src/util/logger';
 import * as snsService from '../../src/service/sns.service';
 
-jest.mock('../../src/lib/config');
+jest.mock('../../src/lib/config', () => ({
+  getConfig: jest.fn().mockReturnValue({
+    emailSnsTopicArn: 'test',
+    availabilityHistorySnsTopicArn: 'test',
+  }),
+}));
 
 describe('Publisher unit tests', () => {
   describe('publishMessages() tests', () => {

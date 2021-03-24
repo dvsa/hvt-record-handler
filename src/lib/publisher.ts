@@ -10,7 +10,7 @@ const config = getConfig();
 export const publishMessages = async (params: PublishMessageParams, logger: Logger): Promise<void> => {
   const { messages, messageType } = params;
 
-  const promises = messages.map((message) => snsService.publish(getTopicParams(message, messageType))
+  const promises = messages.map((message) => snsService.publish(getTopicParams(message, messageType), logger)
     .then(() => ({ atfId: message.id, result: 'success' }))
     .catch(() => ({ atfId: message.id, result: 'failure' })));
 
