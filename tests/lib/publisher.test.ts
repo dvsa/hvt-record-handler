@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access */
-
 import { AttributeMap, Converter } from 'aws-sdk/clients/dynamodb';
 import { publishMessages } from '../../src/lib/publisher';
 import { MessageType } from '../../src/types';
@@ -17,7 +15,7 @@ describe('Publisher unit tests', () => {
   describe('publishMessages() tests', () => {
     const loggerInfoSpy = jest.fn();
     const loggerWarnSpy = jest.fn();
-    let publishMock;
+    let publishMock: jest.SpyInstance;
     const atfOneId = 'atf1';
     let messageOne: AttributeMap = { id: { S: atfOneId } };
     messageOne = Converter.unmarshall(messageOne);

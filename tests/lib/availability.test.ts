@@ -1,4 +1,4 @@
-import type {DynamoDBRecord, DynamoDBStreamEvent, StreamRecord} from 'aws-lambda';
+import type { DynamoDBStreamEvent, StreamRecord } from 'aws-lambda';
 import AWS from 'aws-sdk';
 
 import { extractAvailabilityData, availabilityHasChanged } from '../../src/lib/availability';
@@ -24,7 +24,7 @@ describe('extractAvailabilityData()', () => {
   const invalidAvailabilityEventNewImage = AWS.DynamoDB.Converter.unmarshall(eventWithInvalidAvailability.NewImage);
 
   it('extracts the availability data as expected', () => {
-    const { token } = validEventNewImage;
+    const token = eventMock.Records[0].dynamodb.NewImage.token.S;
     const testCases = [
       {
         record: {
