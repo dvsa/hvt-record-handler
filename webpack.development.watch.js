@@ -1,8 +1,6 @@
 const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
+const development = require('./webpack.development.js');
 
-module.exports = merge(common, {
-  mode: 'development',
-  devtool: 'source-map',
+module.exports = merge(development, {
   watch: true
 });

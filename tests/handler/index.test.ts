@@ -114,7 +114,7 @@ describe('Record handler lambda index tests', () => {
     expect(publisherSpy).nthCalledWith(1, emailPublishParams, expect.anything());
   });
 
-  test('should not publish to the availability history topic if availability has changed', async () => {
+  test('should publish to the availability history topic if availability has changed', async () => {
     extractAvailabilityDataSpy.mockImplementation(jest.fn()).mockReturnValue(availabilityData);
     jest.spyOn(availability, 'availabilityHasChanged').mockReturnValue(true);
     const publisherSpy = jest.spyOn(publisher, 'publishMessages').mockResolvedValue();
