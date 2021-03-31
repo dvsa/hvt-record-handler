@@ -15,6 +15,7 @@ describe('Publisher unit tests', () => {
   describe('publishMessages() tests', () => {
     const loggerInfoSpy = jest.fn();
     const loggerWarnSpy = jest.fn();
+    const loggerErrorSpy = jest.fn();
     let publishMock: jest.SpyInstance;
     const atfOneId = 'atf1';
     let messageOne: AttributeMap = { id: { S: atfOneId } };
@@ -26,6 +27,7 @@ describe('Publisher unit tests', () => {
     const loggerMock = <Logger> <unknown> {
       info: loggerInfoSpy,
       warn: loggerWarnSpy,
+      error: loggerErrorSpy
     };
     beforeEach(() => {
       publishMock = jest.spyOn(snsService, 'publish');
@@ -57,16 +59,16 @@ describe('Publisher unit tests', () => {
         messages: [messageOne, messageTwo],
         messageType: MessageType.AvailabilityHistory,
       };
-      const firstFailureResult = { atfId: messageOne.id, result: 'failure' };
-      const secondFailureResult = { atfId: messageTwo.id, result: 'failure' };
+      const firstFailureResult = 'invalid credentials';
+      const secondFailureResult = 'network failed';
       publishMock.mockImplementationOnce(jest.fn(() => Promise.reject(firstFailureResult)));
       publishMock.mockImplementationOnce(jest.fn(() => Promise.reject(secondFailureResult)));
 
       await publishMessages(publishMessagesParams, loggerMock);
       expect(loggerInfoSpy).toHaveBeenCalledTimes(1);
-      expect(loggerWarnSpy).toHaveBeenCalledTimes(1);
+      expect(loggerErrorSpy).toHaveBeenCalledTimes(1);
       expect(loggerInfoSpy).toBeCalledWith(`${MessageType.AvailabilityHistory.toString()} messages processed: 2, successful: 0, failed: 2.`);
-      expect(loggerWarnSpy).toBeCalledWith(`Could not publish ${MessageType.AvailabilityHistory.toString()} messages for the following ATFs: ${atfOneId}, ${atfTwoId}`);
+      expect(loggerErrorSpy).toBeCalledWith(`Could not publish ${MessageType.AvailabilityHistory.toString()} messages for the following ATFs: ${atfOneId} - ${firstFailureResult}, ${atfTwoId} - ${secondFailureResult}`);
     });
   });
 });
