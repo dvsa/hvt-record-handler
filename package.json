@@ -15,9 +15,13 @@
     {
       "name": "Shaun Hare",
       "email": "shaun.hare@dvsa.gov.uk"
+    },
+    {
+      "name": "Anna Dodson",
+      "email": "Anna.Dodson@dvsa.gov.uk"
     }
   ],
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.747.0",
     "deep-equal": "^2.0.4",
