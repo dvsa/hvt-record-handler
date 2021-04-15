@@ -20,9 +20,9 @@ const availabilitySchema = Joi.object({
 
 export const extractAvailabilityData = (oldImage: AttributeMap, newImage: AttributeMap): AvailabilityChangeData => {
   const newImageValResult = atfSchema.validate(newImage);
-  if (newImageValResult.error || newImageValResult.errors) {
+  if (newImageValResult.error) {
     throw new Error(`Malformed record: ${JSON.stringify(newImage)}`
-      + `Error: ${newImageValResult.error.message ?? newImageValResult.errors.message}`);
+      + `Error: ${newImageValResult.error.message}`);
   }
 
   const {
@@ -30,7 +30,7 @@ export const extractAvailabilityData = (oldImage: AttributeMap, newImage: Attrib
   } = newImage;
   const { availability: oldAvailability } = oldImage;
   const newAvailabilityValResult = availabilitySchema.validate(newAvailability);
-  if (newAvailabilityValResult.error || newAvailabilityValResult.errors) {
+  if (newAvailabilityValResult.error) {
     throw new Error(`Malformed "availability" field in: ${JSON.stringify(newImage)}`);
   }
 
