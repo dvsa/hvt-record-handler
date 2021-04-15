@@ -10,6 +10,7 @@
     }
   },
   "rules": {
-    "max-len": ["error", { "code": 120 }] // Set default max line length
+    "require-await": "off",
+    "arrow-body-style": "off"
   }
 }

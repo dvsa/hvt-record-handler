@@ -5,7 +5,7 @@
       "eventName": "MODIFY",
       "eventVersion": "1.1",
       "eventSource": "aws:dynamodb",
-      "awsRegion": "eu-west-2",
+      "awsRegion": "eu-west-1",
       "dynamodb": {
         "Keys": {
           "id": {
@@ -77,7 +77,7 @@
         "SizeBytes": 59,
         "StreamViewType": "NEW_AND_OLD_IMAGES"
       },
-      "eventSourceARN": "arn:aws:dynamodb:eu-west-2:123456789012:table/AuthorisedTestingFacilities/stream/2015-06-27T00:48:05.899"
+      "eventSourceARN": "arn:aws:dynamodb:eu-west-1:123456789012:table/AuthorisedTestingFacilities/stream/2015-06-27T00:48:05.899"
     }
   ]
 }
