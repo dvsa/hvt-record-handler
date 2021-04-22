@@ -31,7 +31,6 @@ export const handler = async (event: DynamoDBStreamEvent, context: Context): Pro
     const oldImage: AttributeMap = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.OldImage);
     const newImage: AttributeMap = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.NewImage);
 
-    availabilityHistoryMessages.push(oldImage);
     try {
       availabilityData = extractAvailabilityData(oldImage, newImage);
     } catch (err2) {
@@ -41,6 +40,7 @@ export const handler = async (event: DynamoDBStreamEvent, context: Context): Pro
     const { oldAvailability, newAvailability } = availabilityData;
 
     if (availabilityHasChanged(oldAvailability, newAvailability)) {
+      availabilityHistoryMessages.push(oldImage);
       emailMessages.push(newImage);
     }
   });
