@@ -69,18 +69,17 @@ describe('Record handler lambda index tests', () => {
     jest.clearAllMocks();
   });
 
-  test('should not publish to the email topic if availability has not changed', async () => {
+  test('should not publish to the email or history topic if availability has not changed', async () => {
     extractAvailabilityDataSpy.mockImplementation(jest.fn()).mockReturnValue(availabilityData);
     jest.spyOn(availability, 'availabilityHasChanged').mockReturnValue(false);
     const publisherSpy = jest.spyOn(publisher, 'publishMessages').mockResolvedValue();
 
     await handler(eventMock, contextMock);
 
-    expect(publisherSpy).toBeCalledTimes(1);
-    expect(publisherSpy).nthCalledWith(1, availabilityHistoryPublishParams, expect.anything());
+    expect(publisherSpy).toBeCalledTimes(0);
   });
 
-  test('should not publish to the email topic if extractAvailabilityData fails', async () => {
+  test('should not publish to the email or history topic if extractAvailabilityData fails', async () => {
     const extractError = new Error('Extract error');
     extractAvailabilityDataSpy.mockImplementation(() => { throw extractError; });
     jest.spyOn(availability, 'availabilityHasChanged').mockReturnValue(true);
@@ -89,18 +88,7 @@ describe('Record handler lambda index tests', () => {
     await handler(eventMock, contextMock);
 
     expect(loggerErrorSpy).toBeCalledWith(extractError.message);
-    expect(publisherSpy).toBeCalledTimes(1);
-    expect(publisherSpy).nthCalledWith(1, availabilityHistoryPublishParams, expect.anything());
-  });
-
-  test('should publish the OldImage to the availability history topic even if availability has not changed', async () => {
-    extractAvailabilityDataSpy.mockImplementation(jest.fn()).mockReturnValue(availabilityData);
-    jest.spyOn(availability, 'availabilityHasChanged').mockReturnValue(false);
-    const publisherSpy = jest.spyOn(publisher, 'publishMessages').mockResolvedValue();
-
-    await handler(eventMock, contextMock);
-
-    expect(publisherSpy).toBeCalledWith(availabilityHistoryPublishParams, expect.anything());
+    expect(publisherSpy).toBeCalledTimes(0);
   });
 
   test('should publish the NewImage to the email topic if availability has changed', async () => {
