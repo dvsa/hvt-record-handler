@@ -25,7 +25,7 @@
   "dependencies": {
     "aws-sdk": "^2.887.0",
     "deep-equal": "^2.0.5",
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "joi": "^17.4.0",
     "light-date": "^1.2.0",
     "nunjucks": "^3.2.3"
