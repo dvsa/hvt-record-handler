@@ -9,7 +9,7 @@ sent to the lambda by editing the file `events/event.json`.
 
 ## Requirements
 
-- [node v12.18.4](https://nodejs.org/en/download/releases/)
+- [node v14.17.3](https://nodejs.org/en/download/releases/)
 - [Docker](https://www.docker.com/get-started)
 - [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 
