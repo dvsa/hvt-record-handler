@@ -31,33 +31,33 @@
     "nunjucks": "^3.2.3"
   },
   "devDependencies": {
-    "@dvsa/eslint-config-ts": "^2.0.0",
-    "@types/aws-lambda": "^8.10.75",
+    "@dvsa/eslint-config-ts": "^3.0.0",
+    "@types/aws-lambda": "^8.10.72",
     "@types/deep-equal": "^1.0.1",
     "@types/dotenv": "^8.2.0",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^12.20.8",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.31",
     "@types/nunjucks": "^3.1.4",
     "@types/uuid": "^8.3.0",
-    "archiver": "^5.3.0",
-    "aws-sam-webpack-plugin": "^0.6.0",
+    "archiver": "^5.2.0",
+    "aws-sam-webpack-plugin": "^0.13.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "copy-webpack-plugin": "^6.4.1",
     "current-git-branch": "^1.1.0",
-    "eslint": "^7.24.0",
+    "eslint": "^7.20.0",
     "eslint-import-resolver-typescript": "^2.4.0",
     "fs-extra": "^9.1.0",
-    "jest": "^26.6.3",
+    "jest": "^29.5.0",
     "source-map-support": "^0.5.19",
-    "ts-jest": "^26.5.4",
-    "ts-loader": "^8.1.0",
-    "typescript": "^3.9.9",
+    "ts-jest": "^29.1.0",
+    "ts-loader": "^8.0.17",
+    "typescript": "^5.0.4",
     "uuid": "^8.3.2",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12",
+    "webpack": "^5.84.1",
+    "webpack-cli": "^5.1.1",
     "webpack-merge": "^5.7.3"
   },
   "engines": {
-    "node": "^14.17.3"
+    "node": "^18.16.0"
   }
 }

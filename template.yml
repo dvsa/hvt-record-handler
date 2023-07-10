@@ -7,7 +7,7 @@ Resources:
     Properties:
       CodeUri: src/handler/
       Handler: index.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Events:
         Stream:
           Type: DynamoDB
