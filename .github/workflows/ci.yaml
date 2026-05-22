@@ -1,0 +1,23 @@
+name: CI for HVT Record Handler
+
+on:
+  push:
+
+jobs:
+  lint:
+    uses: dvsa/.github/.github/workflows/nodejs-lint.yaml@v5.0.11
+    with:
+      node-version: '24.x'
+  test:
+    uses: dvsa/.github/.github/workflows/nodejs-test.yaml@v5.0.11
+    with:
+      node-version: '24.x'
+  security:
+    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v5.0.11
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  build:
+    uses: dvsa/.github/.github/workflows/nodejs-build.yaml@v5.0.11
+    with:
+      build-command: npm run build:prod
+      node-version: '24.x'
