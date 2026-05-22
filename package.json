@@ -58,6 +58,6 @@
     "webpack-merge": "^5.7.3"
   },
   "engines": {
-    "node": "^18.16.0"
+    "node": "^24.0.0"
   }
 }
